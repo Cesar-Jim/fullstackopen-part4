@@ -1,0 +1,7 @@
+put http://localhost:3001/api/notes/5d9d1e541017134e0c04564c
+Content-Type: application/json
+
+{
+   "content": "Mongo creates non-relational databases",
+   "important": true
+}
