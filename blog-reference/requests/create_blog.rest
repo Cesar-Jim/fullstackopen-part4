@@ -1,0 +1,9 @@
+POST http://localhost:3001/blogs
+Content-Type: application/json
+
+{
+  "title": "",
+	"author": "Arthur Smithers",
+	"url": "www.reactstyledcomponents.com",
+	"likes": 133
+}
