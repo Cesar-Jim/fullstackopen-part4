@@ -6,12 +6,12 @@
   "scripts": {
     "start": "node index.js",
     "watch": "nodemon index.js",
-    "test": "echo \"error: no test specified\" && exit 1",
     "build:ui": "rm -rf build && cd C:\\Users\\c.jimenez\\Documents\\personal\\programas\\fullstackopen\\part2 && npm run build --prod && cp -r build C:\\Users\\c.jimenez\\Documents\\personal\\programas\\fullstackopen-part3\\notes",
     "deploy": "git push heroku master",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
     "logs:prod": "heroku logs --tail",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "jest --verbose"
   },
   "author": "Cesar Jimenez",
   "license": "MIT",
@@ -23,6 +23,10 @@
   },
   "devDependencies": {
     "eslint": "^6.5.1",
+    "jest": "^24.9.0",
     "nodemon": "^1.19.3"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
