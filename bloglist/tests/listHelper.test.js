@@ -60,7 +60,7 @@ const blogsMoreThanOneElement = [
     likes: 2,
     __v: 0
   }
-]
+];
 
 // Test suite for dummy function:
 describe('dummy function', () => {
@@ -69,7 +69,7 @@ describe('dummy function', () => {
     const result = listHelper.dummy(blogsEmpty);
     expect(result).toBe(1)
   });
-})
+});
 
 // Test suite for totalLikes function:
 describe('total likes', () => {
@@ -83,14 +83,14 @@ describe('total likes', () => {
 
     const result = listHelper.totalLikes(blogsOneElement);
     expect(result).toBe(5);
-  })
+  });
 
   test('of a list containing more than 1 blog is calculated right', () => {
 
     const result = listHelper.totalLikes(blogsMoreThanOneElement);
     expect(result).toBe(36);
-  })
-})
+  });
+});
 
 // Test suite for favorite blog
 describe('favorite blog', () => {
@@ -98,11 +98,29 @@ describe('favorite blog', () => {
 
     const result = listHelper.favoriteBlog(blogsOneElement);
     expect(result).toEqual({ title: 'Go To Statement Considered Harmful', author: 'Edsger W. Dijkstra', likes: 5 })
-  })
+  });
 
   test('of a list containing more than one blog, should return the one that has the most likes (in case of a draw, the last one wins)', () => {
 
     const result = listHelper.favoriteBlog(blogsMoreThanOneElement);
     expect(result).toEqual({ title: 'Canonical string reduction', author: 'Edsger W. Dijkstra', likes: 12 });
-  })
-})
+  });
+});
+
+// Test suite for top blogger
+describe('top blogger', () => {
+  test('of a list containing more than one blog, should return the author that has more blogs', () => {
+
+    const result = listHelper.topBlogger(blogsMoreThanOneElement);
+    expect(result).toEqual({ author: 'Robert C. Martin', blogs: 3 });
+  });
+});
+
+// Test suite for most liked blogger
+describe('most liked blogger', () => {
+  test('of a list containing more than one blog, should return the author that overall has the most likes', () => {
+
+    const result = listHelper.mostLikedBlogger(blogsMoreThanOneElement);
+    expect(result).toEqual({ author: 'Edsger W. Dijkstra', likes: 17 });
+  });
+});
