@@ -4,6 +4,5 @@ Content-Type: application/json
 {
   "title": "JavaScript Secrets",
 	"author": "Cesar Jimenez",
-	"url": "www.hiddenjs.com",
-	"likes": 110
+	"url": "www.hiddenjs.com"
 }

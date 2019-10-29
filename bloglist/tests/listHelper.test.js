@@ -1,7 +1,7 @@
 const listHelper = require('../utils/list_helper');
 
-const blogsEmpty = [];
-const blogsOneElement = [
+const emptyBlogsList = [];
+const oneItemBlogsList = [
   {
     _id: '5a422aa71b54a676234d17f8',
     title: 'Go To Statement Considered Harmful',
@@ -11,7 +11,7 @@ const blogsOneElement = [
     __v: 0
   }
 ]
-const blogsMoreThanOneElement = [
+const severaltemsBlogsList = [
   {
     _id: "5a422a851b54a676234d17f7",
     title: "React patterns",
@@ -66,7 +66,7 @@ const blogsMoreThanOneElement = [
 describe('dummy function', () => {
   test('dummy returns one', () => {
 
-    const result = listHelper.dummy(blogsEmpty);
+    const result = listHelper.dummy(emptyBlogsList);
     expect(result).toBe(1)
   });
 });
@@ -75,19 +75,19 @@ describe('dummy function', () => {
 describe('total likes', () => {
   test('of an empty list is zero', () => {
 
-    const result = listHelper.totalLikes(blogsEmpty);
+    const result = listHelper.totalLikes(emptyBlogsList);
     expect(result).toBe(0);
   });
 
   test('of a list containing just one blog, equals the likes of that blog', () => {
 
-    const result = listHelper.totalLikes(blogsOneElement);
+    const result = listHelper.totalLikes(oneItemBlogsList);
     expect(result).toBe(5);
   });
 
   test('of a list containing more than 1 blog is calculated right', () => {
 
-    const result = listHelper.totalLikes(blogsMoreThanOneElement);
+    const result = listHelper.totalLikes(severaltemsBlogsList);
     expect(result).toBe(36);
   });
 });
@@ -96,13 +96,13 @@ describe('total likes', () => {
 describe('favorite blog', () => {
   test('of a list containing just one blog, equals that same blog ', () => {
 
-    const result = listHelper.favoriteBlog(blogsOneElement);
+    const result = listHelper.favoriteBlog(oneItemBlogsList);
     expect(result).toEqual({ title: 'Go To Statement Considered Harmful', author: 'Edsger W. Dijkstra', likes: 5 })
   });
 
   test('of a list containing more than one blog, should return the one that has the most likes (in case of a draw, the last one wins)', () => {
 
-    const result = listHelper.favoriteBlog(blogsMoreThanOneElement);
+    const result = listHelper.favoriteBlog(severaltemsBlogsList);
     expect(result).toEqual({ title: 'Canonical string reduction', author: 'Edsger W. Dijkstra', likes: 12 });
   });
 });
@@ -111,7 +111,7 @@ describe('favorite blog', () => {
 describe('top blogger', () => {
   test('of a list containing more than one blog, should return the author that has more blogs', () => {
 
-    const result = listHelper.topBlogger(blogsMoreThanOneElement);
+    const result = listHelper.topBlogger(severaltemsBlogsList);
     expect(result).toEqual({ author: 'Robert C. Martin', blogs: 3 });
   });
 });
@@ -120,7 +120,9 @@ describe('top blogger', () => {
 describe('most liked blogger', () => {
   test('of a list containing more than one blog, should return the author that overall has the most likes', () => {
 
-    const result = listHelper.mostLikedBlogger(blogsMoreThanOneElement);
+    const result = listHelper.mostLikedBlogger(severaltemsBlogsList);
     expect(result).toEqual({ author: 'Edsger W. Dijkstra', likes: 17 });
   });
 });
+
+module.exports = { emptyBlogsList, oneItemBlogsList, severaltemsBlogsList }

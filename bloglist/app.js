@@ -11,8 +11,10 @@ const logger = require('./utils/logger');
 logger.info('connecting to', config.MONGODB_URI);
 
 const options = {
+  keepAlive: 1,
   useUnifiedTopology: true,
   useNewUrlParser: true,
+  useFindAndModify: false
 };
 
 mongoose.connect(config.MONGODB_URI, options).then(() => {

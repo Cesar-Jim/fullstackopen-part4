@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const Blog = require('../models/Blog');
 
 const dummy = blogs => {
   if (Array.isArray(blogs)) {
@@ -66,11 +67,18 @@ const mostLikedBlogger = blogs => {
   return mostLikedAuthor;
 }
 
+const blogsInDb = async () => {
+  const blogs = await Blog.find({});
+
+  return blogs.map(blog => blog.toJSON());
+}
+
 
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   topBlogger,
-  mostLikedBlogger
+  mostLikedBlogger,
+  blogsInDb
 };

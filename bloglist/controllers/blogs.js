@@ -1,12 +1,14 @@
 const blogsRouter = require('express').Router();
 const Blog = require('../models/Blog');
 
+// GET ALL BLOGS
 blogsRouter.get('/', (req, res) => {
-  Blog.find({}).then(notes => {
-    res.json(notes.map(blog => blog.toJSON()));
+  Blog.find({}).then(blogs => {
+    res.json(blogs.map(blog => blog.toJSON()));
   })
 });
 
+// GET A SINGLE BLOG
 blogsRouter.get('/:id', (req, res, next) => {
   Blog.findById(req.params.id).then(blog => {
     if (blog) {
@@ -17,8 +19,11 @@ blogsRouter.get('/:id', (req, res, next) => {
   }).catch(error => next(error))
 });
 
+// CREATE A BLOG
 blogsRouter.post('/', (req, res, next) => {
   const body = req.body;
+
+  if (!body.likes) body.likes = 0;
 
   const blog = new Blog({
     title: body.title,
@@ -32,13 +37,18 @@ blogsRouter.post('/', (req, res, next) => {
   }).catch(error => next(error));
 });
 
-blogsRouter.delete('/:id', (req, res, next) => {
-  Blog.findByIdAndRemove(req.params.id).then(() => {
+// DELETE A SINGLE BLOG
+blogsRouter.delete('/:id', async (req, res, next) => {
+  try {
+    await Blog.findByIdAndRemove(req.params.id);
     res.status(204).end();
-  }).catch(error => next(error));
+  } catch (exception) {
+    next(exception);
+  };
 });
 
-blogsRouter.put('/:id', (req, res, next) => {
+// EDIT A SINGLE BLOG
+blogsRouter.put('/:id', async (req, res, next) => {
   const body = req.body;
 
   const blog = {
@@ -48,9 +58,12 @@ blogsRouter.put('/:id', (req, res, next) => {
     likes: body.likes
   }
 
-  Blog.findByIdAndUpdate(req.params.id, blog, { new: true }).then(updatedBlog => {
-    res.json(updatedBlog.toJSON())
-  }).catch(error => next(error));
+  try {
+    await Blog.findByIdAndUpdate(req.params.id, blog, { new: true });
+    res.status(200).end();
+  } catch (exception) {
+    next(exception);
+  }
 })
 
 module.exports = blogsRouter;
