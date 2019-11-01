@@ -4,6 +4,7 @@ const helper = require('../utils/list_helper');
 const app = require('../app');
 const api = supertest(app);
 const Blog = require('../models/Blog');
+const User = require('../models/User');
 
 const initialBlogList = [
   {
@@ -117,6 +118,78 @@ describe('PUT (edit) blogs', () => {
       expect(blog.title).toEqual('I am an edited blog');
     })
   });
+});
+
+// USER RELATED TESTING:
+describe('when there is initially one user in the db', () => {
+  beforeEach(async () => {
+    await User.deleteMany({});
+    const user = new User({ username: 'root', password: 'secret' });
+    await user.save();
+  });
+
+  test('creation succeeds with a fresh username', async () => {
+    const usersAtStart = await helper.usersInDb();
+
+    const newUser = {
+      username: 'cjimenez',
+      name: 'Cesar Jimenez',
+      password: '1234',
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(200)
+      .expect('Content-Type', /application\/json/);
+
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd.length).toBe(usersAtStart.length + 1);
+
+    const usernames = usersAtEnd.map(u => u.username);
+    expect(usernames).toContain(newUser.username);
+  });
+
+  test('creation fails with proper status code and message if username is already taken', async () => {
+    const usersAtStart = await helper.usersInDb();
+
+    const newUser = {
+      username: 'root',
+      name: 'Superuser',
+      password: '1234',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/);
+
+    expect(result.body.error).toContain('`username` to be unique');
+
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd.length).toBe(usersAtStart.length);
+  });
+
+  test('creation fails with proper status if username and/or password are not provided', async () => {
+    const usersAtStart = await helper.usersInDb();
+
+    const newUser = {
+      name: 'Peter Smith',
+      password: '1234',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/);
+
+    expect(result.body.error).toContain('username AND password must be provided')
+
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd.length).toBe(usersAtStart.length);
+  })
 });
 
 

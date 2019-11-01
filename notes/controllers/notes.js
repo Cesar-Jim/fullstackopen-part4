@@ -19,6 +19,8 @@ notesRouter.get('/', async (request, response) => {
   response.json(notes.map(note => note.toJSON()));
 })
 
+
+// GET A SINGLE NOTE:
 notesRouter.get('/:id', async (request, response, next) => {
   try {
     const note = await Note.findById(request.params.id);
