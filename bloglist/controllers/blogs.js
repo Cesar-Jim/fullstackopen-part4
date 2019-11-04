@@ -3,15 +3,6 @@ const jwt = require('jsonwebtoken');
 const Blog = require('../models/Blog');
 const User = require('../models/User');
 
-const getTokenFrom = req => {
-  const authorization = req.get('authorization');
-
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7);
-  }
-  return null
-}
-
 // GET ALL BLOGS
 blogsRouter.get('/', async (req, res) => {
   const blogs = await Blog.find({}).populate('user', { name: 1, username: 1 });
@@ -38,11 +29,13 @@ blogsRouter.get('/:id', async (req, res, next) => {
 blogsRouter.post('/', async (req, res, next) => {
   const body = req.body;
 
-  const token = getTokenFrom(req);
+  // const token = getTokenFrom(req);
 
   try {
-    const decodedToken = jwt.verify(token, process.env.SECRET);
-    if (!token || !decodedToken.id) {
+    const token = req.token;
+    const decodedToken = token === null ? false : jwt.verify(token, process.env.SECRET);
+
+    if (!decodedToken || !decodedToken.id) {
       return res.status(401).json({ error: 'token missing or invalid ' })
     }
 
@@ -68,9 +61,24 @@ blogsRouter.post('/', async (req, res, next) => {
 
 // DELETE A SINGLE BLOG
 blogsRouter.delete('/:id', async (req, res, next) => {
+
   try {
-    await Blog.findByIdAndRemove(req.params.id);
-    res.status(204).end();
+    const decodedToken = jwt.verify(req.token, process.env.SECRET);
+
+    // Check if token is OK:
+    if (!req.token || !decodedToken.id) {
+      return res.status(401).json({ error: 'token missing or invalid' });
+    }
+
+    const blog = await Blog.findById(req.params.id);
+
+    if (blog.user.toString() === decodedToken.id) {
+      await blog.remove();
+      res.status(204).end();
+
+    } else {
+      return res.status(400).json({ error: 'blog can not be deleted by a non-owner' });
+    }
   } catch (exception) {
     next(exception);
   };

@@ -1,11 +1,11 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqaW1lbmV6IiwiaWQiOiI1ZGJiMDFhNzhkODk2ODVmMjBhNDhkYWEiLCJpYXQiOjE1NzI1NTM1Nzl9.W6qTArmRk98Zaswwf5RqNTjHx95B1wnL4wq0_d2_jZg
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNqaW1lbmV6IiwiaWQiOiI1ZGJiMDFhNzhkODk2ODVmMjBhNDhkYWEiLCJpYXQiOjE1NzI4ODE0MjB9.VbHxd0zqqlQhAmShk8qGiUY5U9Xzz5_tzGrLVfeViMc
 
 {
-  "title": "I am authenticated",
+  "title": "Tests3",
 	"author": "Cesar Jimenez",
-	"url": "www.authenticated.com",
-	"likes": 200,
+	"url": "www.t3.com",
+	"likes": 7,
 	"userId": "5dbb01a78d89685f20a48daa"
 }
